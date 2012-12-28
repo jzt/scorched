@@ -15,13 +15,13 @@ public class Terrain implements Renderable {
   private int width;
   private int height;
   private int delta;
-  private float[] terrain;
+  private float[] vertices;
 
-  public Terrain(int w, int h) {
+  public Terrain(int w, int h, PhysicsWorld world) {
     width = w;
     height = h;
     delta = 32;
-    terrain = Perlin.perlin(w, h, delta, .025, 16);
+    vertices = Perlin.perlin(w, h, delta, .025, 16);
   }
 
   @Override
@@ -31,8 +31,8 @@ public class Terrain implements Renderable {
 
     GL11.glColor3f(1f, 0f, .25f);
     GL11.glBegin(GL11.GL_LINE_LOOP);
-    for (int i = 0; i < terrain.length; ++i) {
-      GL11.glVertex2f(i*delta, height/4 + 24*terrain[i]);
+    for (int i = 0; i < vertices.length; ++i) {
+      GL11.glVertex2f(i*delta, height/4 + 24*vertices[i]);
     }
     GL11.glVertex2f(width, height/4);
     GL11.glVertex2f(width, 0);
