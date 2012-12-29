@@ -21,7 +21,7 @@ public class PhysicsWorld {
 
   public World world;
 
-  private float timeStep = 1/60f;  // 60Hz
+  public float timeStep = 1/60f;  // 60Hz
   private int velocityIterations = 8;
   private int positionIterations = 3;
 
@@ -51,14 +51,14 @@ public class PhysicsWorld {
     staticBody.createFixture(groundFixture);
   }
 
-  public void addBall(List<Renderable> renderables, int i) {
+  public void addBall(List<Renderable> renderables) {
     Random random = new Random();
     //Ball b = new Ball(physicsWorld, 25, -50, 300f);
     Ball b = new Ball(world, random.nextInt(1280) - 1280/2, random.nextInt(768) - 768/2);
     renderables.add(b);
   }
 
-  public void addBox(List<Renderable> renderables, int i) {
+  public void addBox(List<Renderable> renderables) {
     Random random = new Random();
     //Ball b = new Ball(physicsWorld, 25, -50, 300f);
     Box b = new Box(world, random.nextInt(1280) - 1280/2, random.nextInt(768) - 768/2);

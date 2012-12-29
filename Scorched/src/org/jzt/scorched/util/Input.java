@@ -1,10 +1,14 @@
 package org.jzt.scorched.util;
 
+import org.jbox2d.dynamics.joints.MouseJoint;
 import org.jzt.scorched.Game;
+import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.Display;
-import sun.plugin2.message.GetAppletMessage;
+
+import java.nio.FloatBuffer;
+
+import static org.lwjgl.openal.AL10.*;
 
 /**
  * Author: jon tucker
@@ -20,7 +24,9 @@ public class Input {
     if (Mouse.isButtonDown(0)) {
       int x = Mouse.getX();
       int y = Mouse.getY();
+      alSourcei(Game.source.get(0), AL_POSITION, Game.buffer.get(0));
       System.out.println("Mouse pressed: (" + x + ", " + y + ")");
+
     }
 
     /**
@@ -34,7 +40,8 @@ public class Input {
             Game.running = false;
             break;
           case Keyboard.KEY_SPACE:
-            Game.reset();
+            //Game.reset();
+            alSourcePlay(Game.source);
             break;
           default:
             break;
@@ -45,5 +52,4 @@ public class Input {
       }
     }
   }
-
 }

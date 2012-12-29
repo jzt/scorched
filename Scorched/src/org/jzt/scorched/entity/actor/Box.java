@@ -53,6 +53,7 @@ public class Box implements Renderable {
     fixtureDef.shape = boxShape;
     fixtureDef.density = 1.0f;
     fixtureDef.friction = 0.3f;
+    fixtureDef.restitution = .3f;
     m_body.createFixture(fixtureDef);
   }
 
