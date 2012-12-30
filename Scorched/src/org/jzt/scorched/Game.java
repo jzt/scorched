@@ -3,20 +3,17 @@ package org.jzt.scorched;
 import org.jzt.scorched.audio.AudioHandler;
 import org.jzt.scorched.entity.world.PhysicsWorld;
 import org.jzt.scorched.renderable.Renderable;
+import org.jzt.scorched.renderable.hud.Hud;
 import org.jzt.scorched.util.Input;
-import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.openal.AL;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.util.glu.GLU;
 
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
 import java.util.LinkedList;
 import java.util.List;
 
-import static org.lwjgl.openal.AL10.alDeleteBuffers;
 import static org.lwjgl.opengl.GL11.*;
 
 /**
@@ -34,17 +31,16 @@ public class Game {
   public static List<Renderable> renderableList; // TODO: refactor all rendering out into ScorchedRenderer
   private static Input input;
   public static boolean running;
-  public static IntBuffer source = BufferUtils.createIntBuffer(1);
-  public static FloatBuffer sourcePos;
-  public static IntBuffer buffer = BufferUtils.createIntBuffer(1);
+//  public static Hud hud;
 
   public static AudioHandler audioHandler;
 
-  public static void main(String[] args) {
+  public static void main(String[] args) { // TODO: refactor into start(), initGL(), initAL(), init() methods
     try {
       Display.setDisplayMode(new DisplayMode(width, height));
       Display.setTitle("Charred Terra");
       Display.create();
+      Display.setVSyncEnabled(true);
       AL.create();
       audioHandler = AudioHandler.getInstance();
 
@@ -55,8 +51,14 @@ public class Game {
 
       glMatrixMode(GL_PROJECTION);
       glLoadIdentity();
-      GLU.gluOrtho2D(-1280 / 2f, 1280 / 2f, -768 / 2f, 768 / 2f);
+      GLU.gluOrtho2D(-1280 / 2f, 1280 / 2f, 768 / 2f, -768 / 2f);
       glMatrixMode(GL_MODELVIEW);
+      glEnable(GL_TEXTURE_2D);
+      glShadeModel(GL_SMOOTH);
+      glDisable(GL_DEPTH_TEST);
+      glDisable(GL_LIGHTING);
+      glClearColor(0f, 0f,  0f, 0f);
+      glClearDepth(1);
 
       run();
 
@@ -95,15 +97,27 @@ public class Game {
     running = true;
 
     while (running) {
-      // clear screen & depth buffer
-      glClear(GL_COLOR_BUFFER_BIT);
-      glClearColor(0f, 0f, 0f, 1f);
-      //physicsWorld.update();
+      //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+      // BIG BLACK SQUARE FOR ONION SKIN!
+      glEnable(GL_BLEND);
+      glColor4f(0f, 0f, 0f, .4f);
+      glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+      glBegin(GL_POLYGON);
+      glVertex2f(-width / 2, -height / 2);
+      glVertex2f(width / 2, -height / 2);
+      glVertex2f(width / 2, height / 2);
+      glVertex2f(-width/2, height/2);
+      glEnd();
+      glDisable(GL_BLEND);
+
       for (Renderable r : renderableList) {
         r.render();
       }
+
+
       input.poll();
       Display.update();
+      Display.sync(60);
       if (Display.isCloseRequested()) {
         running = false;
       }
@@ -121,12 +135,13 @@ public class Game {
     running = true;
     physicsWorld.addBall(renderableList);
     physicsWorld.addBox(renderableList);
-/*    for (int i = 0; i < 50; ++i) {
+
+    for (int i = 0; i < 100; ++i) {
       if (i % 2 == 0)
-        physicsWorld.addBox(renderableList);
-      else
         physicsWorld.addBall(renderableList);
-    }*/
+      else
+        physicsWorld.addBox(renderableList);
+    }
   }
 
 }

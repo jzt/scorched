@@ -160,9 +160,9 @@ public class AudioHandler {
     float xpan = ScorchedUtils.map(position.x, -Game.width/2, Game.width/2, -1f, 1f);
     float ypan = ScorchedUtils.map(position.y, -Game.height/2, Game.height/2, -1f, 1f);
     sourcePos.put(id * 3 + 0, xpan);
-/*    sourcePos.put(id*3+1, ypan); */
-    sourcePos.put(id*3+2, 0f);
-    System.out.println(position.x + ", " + position.y + ": xpan (" + xpan + ")");
+    //sourcePos.put(id*3+1, ypan);    // TODO: test this to make sure it sounds best
+    sourcePos.put(id*3+1, 0f);
+    //sourcePos.put(id*3+2, 0f);
     //sourcePos.put(id * 3 + 1, (float) Math.sqrt(1.0 - xpan*xpan));
     sourcePos.put(id * 3 + 2, (float) -Math.sqrt(1.0 - xpan*xpan));
 

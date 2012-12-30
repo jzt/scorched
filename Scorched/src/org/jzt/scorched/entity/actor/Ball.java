@@ -43,7 +43,7 @@ public class Ball implements Renderable {
     loc = new Vec2(x, y);
     m_world = world;
     m_body = null;
-    m_radius = random.nextFloat() * 10f + 10f;
+    m_radius = random.nextFloat() * 20f + 20f;
 
     BodyDef bodyDef = new BodyDef();
     bodyDef.type = BodyType.DYNAMIC;
@@ -57,11 +57,11 @@ public class Ball implements Renderable {
     FixtureDef fixtureDef = new FixtureDef();
     fixtureDef.shape = circleShape;
     fixtureDef.density = 1.0f;
-    fixtureDef.friction = 0.8f;
+    fixtureDef.friction = 0.9f;
     fixtureDef.restitution = 0.4f;
     m_body.createFixture(fixtureDef);
 
-    sound = new Sound(m_body, AudioSamples.ENERGIZE, AudioHandler.totalSources++, false);
+    //sound = new Sound(m_body, AudioSamples.ENERGIZE, AudioHandler.totalSources++, false);
   }
 
   public void render() {
@@ -72,14 +72,21 @@ public class Ball implements Renderable {
     glPushMatrix();
     glTranslatef(pos.x, pos.y, 0);
     glRotated(angle*(180/Math.PI), 0, 0, 1);
-    glColor4f(R, G, B, Math.min(1, vel.length()/20));
+
+    glLineWidth(.5f);
+    glColor4f(R, G, B, 1f);
     glBegin(GL_POLYGON);
     for (float a = 0; a < Math.PI*2; a += Math.PI/32) {
       glVertex2d(m_radius*Math.sin(a), m_radius*Math.cos(a));
     }
     glEnd();
-    //glColor4f(R, G, B, Math.min(1, vel.length()/20));
-    glColor3f(0f, 0f, 0f);
+
+    glColor4f(1.0f, 1.0f, 1.0f, 1f);
+    glBegin(GL_LINE_LOOP);
+    for (float a = 0; a < Math.PI*2; a += Math.PI/32) {
+      glVertex2d(m_radius*Math.sin(a), m_radius*Math.cos(a));
+    }
+    glEnd();
     glBegin(GL_LINES);
     glVertex2d(0f, 0f);
     glVertex2d(m_radius, 0f);

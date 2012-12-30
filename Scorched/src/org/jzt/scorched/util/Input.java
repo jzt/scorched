@@ -35,14 +35,19 @@ public class Input {
      * KB shit
      */
 
-    if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
+    if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
+      Ball b = (Ball) Game.renderableList.get(0);
+      b.m_body.setAngularVelocity(-5f);
+    }
+
+    if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
       Ball b = (Ball) Game.renderableList.get(0);
       b.m_body.setAngularVelocity(5f);
     }
 
-    if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
+    if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
       Ball b = (Ball) Game.renderableList.get(0);
-      b.m_body.setAngularVelocity(-5f);
+      b.m_body.setAngularVelocity(0f);
     }
 
     while (Keyboard.next()) {
@@ -55,10 +60,14 @@ public class Input {
           case Keyboard.KEY_R:
             Game.reset();
             break;
-          case Keyboard.KEY_UP:
+          case Keyboard.KEY_W:
             b = (Ball) Game.renderableList.get(0);
-            b.m_body.applyLinearImpulse(new Vec2().set(0f, 100000f), b.m_body.getPosition());
+            b.m_body.applyLinearImpulse(new Vec2().set(0f, -100000f), b.m_body.getPosition());
             break;
+/*          case Keyboard.KEY_S:
+            b = (Ball) Game.renderableList.get(0);
+            b.m_body.setAngularVelocity(0f);
+            break;*/
 /*          case Keyboard.KEY_LEFT:
             b = (Ball) Game.renderableList.get(0);
             b.m_body.applyAngularImpulse(100000f);

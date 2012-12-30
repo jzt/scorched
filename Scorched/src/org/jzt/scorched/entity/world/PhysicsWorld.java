@@ -27,7 +27,7 @@ public class PhysicsWorld {
 
   public PhysicsWorld() {
 
-    Vec2 gravity = new Vec2(0f, -9.8f);
+    Vec2 gravity = new Vec2(0f, 9.8f);
     boolean doSleep = true;
     world = new World(gravity, doSleep);
 

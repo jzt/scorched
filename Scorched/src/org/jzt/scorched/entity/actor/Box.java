@@ -65,7 +65,8 @@ public class Box implements Renderable {
     glPushMatrix();
     glTranslatef(pos.x, pos.y, 0);
     glRotated(angle*(180/Math.PI), 0, 0, 1);
-    glColor4f(R, G, B, Math.min(1, vel.length()/20));
+    //glColor4f(R, G, B, Math.min(1, vel.length()/20));
+    glColor4f(R, G, B, 1f);
     glBegin(GL_TRIANGLES);
     glVertex2d(m_width/2, -m_height/2);
     glVertex2d(m_width/2, m_height/2);
@@ -73,10 +74,6 @@ public class Box implements Renderable {
     glVertex2d(m_width/2, -m_height/2);
     glVertex2d(-m_width/2, -m_height/2);
     glVertex2d(-m_width/2, m_height/2);
-    glEnd();
-    glColor4f(R, G, B, Math.min(1, vel.length()/20));
-    glBegin(GL_POINT);
-    glVertex2d(pos.x, pos.y);
     glEnd();
     glPopMatrix();
   }
