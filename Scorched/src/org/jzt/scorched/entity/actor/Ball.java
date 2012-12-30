@@ -3,6 +3,9 @@ package org.jzt.scorched.entity.actor;
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
+import org.jzt.scorched.audio.AudioHandler;
+import org.jzt.scorched.audio.AudioSamples;
+import org.jzt.scorched.audio.Sound;
 import org.jzt.scorched.renderable.Renderable;
 
 import java.util.Random;
@@ -15,6 +18,7 @@ import static org.lwjgl.opengl.GL11.*;
  * Time: 5:09 PM
  */
 public class Ball implements Renderable {
+
   public World m_world;
   public Body m_body;
   public float m_radius;
@@ -25,6 +29,8 @@ public class Ball implements Renderable {
   private float B;
 
   private Random random;
+
+  public Sound sound;
 
   public Ball(World world, float x, float y) {
 
@@ -37,12 +43,12 @@ public class Ball implements Renderable {
     loc = new Vec2(x, y);
     m_world = world;
     m_body = null;
-    m_radius = random.nextFloat()*20f + 20f;
+    m_radius = random.nextFloat() * 10f + 10f;
 
     BodyDef bodyDef = new BodyDef();
     bodyDef.type = BodyType.DYNAMIC;
     bodyDef.position.set(loc.x, loc.y);
-    bodyDef.angle = (float) (random.nextFloat()*Math.PI*2);
+    bodyDef.angle = (float) (random.nextFloat() * Math.PI * 2);
     m_body = m_world.createBody(bodyDef);
 
     CircleShape circleShape = new CircleShape();
@@ -51,9 +57,11 @@ public class Ball implements Renderable {
     FixtureDef fixtureDef = new FixtureDef();
     fixtureDef.shape = circleShape;
     fixtureDef.density = 1.0f;
-    fixtureDef.friction = 0.3f;
-    fixtureDef.restitution = 0.5f;
+    fixtureDef.friction = 0.8f;
+    fixtureDef.restitution = 0.4f;
     m_body.createFixture(fixtureDef);
+
+    sound = new Sound(m_body, AudioSamples.ENERGIZE, AudioHandler.totalSources++, false);
   }
 
   public void render() {

@@ -1,7 +1,11 @@
 package org.jzt.scorched.util;
 
+import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.joints.MouseJoint;
 import org.jzt.scorched.Game;
+import org.jzt.scorched.audio.AudioHandler;
+import org.jzt.scorched.audio.AudioSamples;
+import org.jzt.scorched.entity.actor.Ball;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -24,24 +28,48 @@ public class Input {
     if (Mouse.isButtonDown(0)) {
       int x = Mouse.getX();
       int y = Mouse.getY();
-      alSourcei(Game.source.get(0), AL_POSITION, Game.buffer.get(0));
-      System.out.println("Mouse pressed: (" + x + ", " + y + ")");
-
+      System.out.println("Click at (" + x + ", " + y + ")");
     }
 
     /**
      * KB shit
      */
+
+    if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
+      Ball b = (Ball) Game.renderableList.get(0);
+      b.m_body.setAngularVelocity(5f);
+    }
+
+    if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
+      Ball b = (Ball) Game.renderableList.get(0);
+      b.m_body.setAngularVelocity(-5f);
+    }
+
     while (Keyboard.next()) {
       if (Keyboard.getEventKeyState()) {  // key(s) pressed
+        Ball b;
         switch (Keyboard.getEventKey()) {
-
           case Keyboard.KEY_ESCAPE:
             Game.running = false;
             break;
+          case Keyboard.KEY_R:
+            Game.reset();
+            break;
+          case Keyboard.KEY_UP:
+            b = (Ball) Game.renderableList.get(0);
+            b.m_body.applyLinearImpulse(new Vec2().set(0f, 100000f), b.m_body.getPosition());
+            break;
+/*          case Keyboard.KEY_LEFT:
+            b = (Ball) Game.renderableList.get(0);
+            b.m_body.applyAngularImpulse(100000f);
+            break;*/
+/*          case Keyboard.KEY_RIGHT:
+            b = (Ball) Game.renderableList.get(0);
+            b.m_body.applyAngularImpulse(-100000f);
+            //b.m_body.applyLinearImpulse(new Vec2().set(100000f, 0f), b.m_body.getPosition());
+            break;*/
           case Keyboard.KEY_SPACE:
-            //Game.reset();
-            alSourcePlay(Game.source);
+            ((Ball) Game.renderableList.get(0)).sound.play();
             break;
           default:
             break;
